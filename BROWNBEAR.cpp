@@ -1,4 +1,4 @@
-﻿#ifndef _GLIBCXX_NO_ASSERT
+#ifndef _GLIBCXX_NO_ASSERT
 #include <cassert>
 #endif
 #include <cctype>
@@ -99,7 +99,7 @@
 
 using namespace std;
 
-//fonctions
+//fonctions 
 string lowerCaseString(string& source);
 string special_shuffle(std::string s);
 string encryptAES(const std::string& plaintext, const std::string& key, const std::string& iv);
@@ -288,8 +288,11 @@ int main()
 //converts all letters that are upper case to lower case in source
 string lowerCaseString(string& source)
 {
-	unsigned i;
-	for (i = 0; i < source.size(); ++i)
+	if (source.empty()) {
+		throw std::invalid_argument("Input string is empty");
+	}
+
+	for (unsigned i = 0; i < source.size(); ++i)
 	{
 		if (isupper(source.at(i)))
 		{
@@ -299,120 +302,119 @@ string lowerCaseString(string& source)
 	return source;
 }
 
-//encrypts the source string based on the cipher key, then writes the encrypted string to string destination
+//ENCRYPTION SUBSTITUTION
 bool substitution(string& source, string cipherKey, string& destination)
 {
-
 	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
 
 	destination = source; // To make sure the size of destination is the same as source
 
-	if (source.size() == 0)
-		return false;
-	else
-	{
-		for (unsigned int i = 0; i < source.size(); ++i)
-			destination.at(i) = cipherKey.at(alphabet.find(source.at(i)));
-		return false;
+	if (source.empty()) {
+		throw std::invalid_argument("Input string is empty");
 	}
+
+	if (cipherKey.empty()) {
+		throw std::invalid_argument("Cipher key is empty");
+	}
+
+	for (unsigned int i = 0; i < source.size(); ++i) {
+		char character = source.at(i);
+		size_t found = alphabet.find(character);
+		if (found == string::npos) {
+			throw std::invalid_argument("Character '" + string(1, character) + "' in input string is not supported for substitution");
+		}
+		destination.at(i) = cipherKey.at(found);
+	}
+
+	return true;
 }
 
 bool Encrypted(string& destination, string cipherKeyA, string& encrypted)
 {
-
 	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
 
 	encrypted = destination; // To make sure the size of destination is the same as source
 
-	if (destination.size() == 0)
-		return false;
-	else
-	{
-		for (unsigned int i = 0; i < destination.size(); ++i)
-			encrypted.at(i) = cipherKeyA.at(alphabet.find(destination.at(i)));
-		return false;
+	if (destination.empty()) {
+		throw std::invalid_argument("Destination string is empty");
 	}
+
+	if (cipherKeyA.empty()) {
+		throw std::invalid_argument("Cipher key is empty");
+	}
+
+	for (unsigned int i = 0; i < destination.size(); ++i) {
+		char character = destination.at(i);
+		size_t found = alphabet.find(character);
+		if (found == string::npos) {
+			throw std::invalid_argument("Character '" + string(1, character) + "' in destination string is not supported for encryption");
+		}
+		encrypted.at(i) = cipherKeyA.at(found);
+	}
+
+	return true;
 }
 
 bool Encrypted2(string& destination, string cipherKeyB, string& encrypted2)
 {
-
 	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
 
 	encrypted2 = destination; // To make sure the size of destination is the same as source
 
-	if (destination.size() == 0)
-		return false;
-	else
-	{
-		for (unsigned int i = 0; i < destination.size(); ++i)
-			encrypted2.at(i) = cipherKeyB.at(alphabet.find(destination.at(i)));
-		return false;
+	if (destination.empty()) {
+		throw std::invalid_argument("Destination string is empty");
 	}
-}
 
-//encrypts the source string based on the cipher key, then writes the encrypted string to string destination
-bool desubstitution(string& decrypted, string cipherKey, string& original)
-{
-
-	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
-
-	original = decrypted; // To make sure the size of original is the same as source
-
-	if (decrypted.size() == 0)
-		return false;
-	else
-	{
-		for (unsigned int i = 0; i < decrypted.size(); ++i)
-			original.at(i) = alphabet.at(cipherKey.find(decrypted.at(i)));
-		return false;
+	if (cipherKeyB.empty()) {
+		throw std::invalid_argument("Cipher key is empty");
 	}
-}
 
-//encrypts the source string based on the cipher key, then writes the encrypted string to string destination
-bool Decrypted(string& sourceB, string cipherKeyA, string& decrypted)
-{
-
-	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
-
-	decrypted = sourceB; // To make sure the size of original is the same as source
-
-	if (sourceB.size() == 0)
-		return false;
-	else
-	{
-		for (unsigned int i = 0; i < sourceB.size(); ++i)
-			decrypted.at(i) = alphabet.at(cipherKeyA.find(sourceB.at(i)));
-		return false;
+	for (unsigned int i = 0; i < destination.size(); ++i) {
+		char character = destination.at(i);
+		size_t found = alphabet.find(character);
+		if (found == string::npos) {
+			throw std::invalid_argument("Character '" + string(1, character) + "' in destination string is not supported for encryption");
+		}
+		encrypted2.at(i) = cipherKeyB.at(found);
 	}
+
+	return true;
 }
 
-bool Decrypted2(string& sourceB2, string cipherKeyB, string& sourceB)
-{
-
-	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
-
-	sourceB = sourceB2; // To make sure the size of original is the same as source
-
-	if (sourceB.size() == 0)
-		return false;
-	else
-	{
-		for (unsigned int i = 0; i < sourceB2.size(); ++i)
-			sourceB.at(i) = alphabet.at(cipherKeyB.find(sourceB2.at(i)));
-		return false;
+//AES ENCRYPTION
+std::string encryptAES(const std::string& plaintext, const std::string& key, const std::string& iv) {
+	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+	if (!ctx) {
+		throw std::runtime_error("Error creating EVP_CIPHER_CTX");
 	}
-}
 
-std::string special_shuffle(std::string s)
-{
-	if (s.size() < 3) return s;
-	auto begin = std::find_if(s.begin(), s.end(), ::isprint);
-	auto end = std::find_if(s.rbegin(), s.rend(), ::isprint).base();
-	std::random_shuffle(++begin, --end);
-	return s;
-}
+	if (EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, (const unsigned char*)key.c_str(), (const unsigned char*)iv.c_str()) != 1) {
+		EVP_CIPHER_CTX_free(ctx);
+		throw std::runtime_error("Error initializing AES encryption");
+	}
 
+	int len;
+	int ciphertext_len;
+	std::string ciphertext(plaintext.size() + AES_BLOCK_SIZE, '\0');
+	if (EVP_EncryptUpdate(ctx, (unsigned char*)&ciphertext[0], &len, (const unsigned char*)plaintext.c_str(), plaintext.size()) != 1) {
+		EVP_CIPHER_CTX_free(ctx);
+		throw std::runtime_error("Error updating AES encryption");
+	}
+	ciphertext_len = len;
+
+	if (EVP_EncryptFinal_ex(ctx, (unsigned char*)&ciphertext[ciphertext_len], &len) != 1) {
+		EVP_CIPHER_CTX_free(ctx);
+		throw std::runtime_error("Error finalizing AES encryption");
+	}
+	ciphertext_len += len;
+
+	EVP_CIPHER_CTX_free(ctx);
+
+	// Resize the ciphertext to the actual size
+	ciphertext.resize(ciphertext_len);
+
+	return ciphertext;
+}
 
 // Padding function for AES encryption
 std::string addPadding(const std::string& input) {
@@ -421,67 +423,165 @@ std::string addPadding(const std::string& input) {
 	return input + std::string(paddingSize, paddingChar);
 }
 
-// AES encryption function
-std::string encryptAES(const std::string& plaintext, const std::string& key, const std::string& iv) {
-	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-	EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, (const unsigned char*)key.c_str(), (const unsigned char*)iv.c_str());
 
-	int len;
-	int ciphertext_len;
-	std::string ciphertext(plaintext.size() + AES_BLOCK_SIZE, '\0');
-	EVP_EncryptUpdate(ctx, (unsigned char*)&ciphertext[0], &len, (const unsigned char*)plaintext.c_str(), plaintext.size());
-	ciphertext_len = len;
-	EVP_EncryptFinal_ex(ctx, (unsigned char*)&ciphertext[ciphertext_len], &len);
-	ciphertext_len += len;
-	EVP_CIPHER_CTX_free(ctx);
 
-	return ciphertext;
+
+//DECRYPTION SUBSTITUTION
+bool desubstitution(string& decrypted, string cipherKey, string& original)
+{
+	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
+
+	original = decrypted; // To make sure the size of original is the same as source
+
+	if (decrypted.empty()) {
+		throw std::invalid_argument("Decrypted string is empty");
+	}
+
+	if (cipherKey.empty()) {
+		throw std::invalid_argument("Cipher key is empty");
+	}
+
+	for (unsigned int i = 0; i < decrypted.size(); ++i) {
+		char character = decrypted.at(i);
+		size_t found = cipherKey.find(character);
+		if (found == string::npos) {
+			throw std::invalid_argument("Character '" + string(1, character) + "' in decrypted string is not supported for decryption");
+		}
+		original.at(i) = alphabet.at(found);
+	}
+
+	return true;
+}
+
+bool Decrypted(string& sourceB, string cipherKeyA, string& decrypted)
+{
+	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
+
+	decrypted = sourceB; // To make sure the size of decrypted is the same as sourceB
+
+	if (sourceB.empty()) {
+		throw std::invalid_argument("SourceB string is empty");
+	}
+
+	if (cipherKeyA.empty()) {
+		throw std::invalid_argument("Cipher key is empty");
+	}
+
+	for (unsigned int i = 0; i < sourceB.size(); ++i) {
+		char character = sourceB.at(i);
+		size_t found = cipherKeyA.find(character);
+		if (found == string::npos) {
+			throw std::invalid_argument("Character '" + string(1, character) + "' in sourceB string is not supported for decryption");
+		}
+		decrypted.at(i) = alphabet.at(found);
+	}
+
+	return true;
+}
+
+bool Decrypted2(string& sourceB2, string cipherKeyB, string& sourceB)
+{
+	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
+
+	sourceB = sourceB2; // To make sure the size of sourceB is the same as sourceB2
+
+	if (sourceB2.empty()) {
+		throw std::invalid_argument("SourceB2 string is empty");
+	}
+
+	if (cipherKeyB.empty()) {
+		throw std::invalid_argument("Cipher key is empty");
+	}
+
+	for (unsigned int i = 0; i < sourceB2.size(); ++i) {
+		char character = sourceB2.at(i);
+		size_t found = cipherKeyB.find(character);
+		if (found == string::npos) {
+			throw std::invalid_argument("Character '" + string(1, character) + "' in sourceB2 string is not supported for decryption");
+		}
+		sourceB.at(i) = alphabet.at(found);
+	}
+
+	return true;
 }
 
 // AES decryption function
 std::string decryptAES(const std::string& ciphertext, const std::string& key, const std::string& iv) {
 	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-	EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, (const unsigned char*)key.c_str(), (const unsigned char*)iv.c_str());
+	if (!ctx) {
+		throw std::runtime_error("Error creating EVP_CIPHER_CTX");
+	}
+
+	if (EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, (const unsigned char*)key.c_str(), (const unsigned char*)iv.c_str()) != 1) {
+		EVP_CIPHER_CTX_free(ctx);
+		throw std::runtime_error("Error initializing AES decryption");
+	}
 
 	int len;
 	int plaintext_len;
 	std::string plaintext(ciphertext.size() + AES_BLOCK_SIZE, '\0');
 
-	// Debug output
-	std::cout << "Ciphertext size: " << ciphertext.size() << std::endl;
-
-	EVP_DecryptUpdate(ctx, (unsigned char*)&plaintext[0], &len, (const unsigned char*)ciphertext.c_str(), ciphertext.size());
+	if (EVP_DecryptUpdate(ctx, (unsigned char*)&plaintext[0], &len, (const unsigned char*)ciphertext.c_str(), ciphertext.size()) != 1) {
+		EVP_CIPHER_CTX_free(ctx);
+		throw std::runtime_error("Error updating AES decryption");
+	}
 	plaintext_len = len;
 
-	// Debug output
-	std::cout << "Plaintext length after update: " << plaintext_len << std::endl;
-
-	EVP_DecryptFinal_ex(ctx, (unsigned char*)&plaintext[plaintext_len], &len);
+	if (EVP_DecryptFinal_ex(ctx, (unsigned char*)&plaintext[plaintext_len], &len) != 1) {
+		EVP_CIPHER_CTX_free(ctx);
+		throw std::runtime_error("Error finalizing AES decryption");
+	}
 	plaintext_len += len;
+
 	EVP_CIPHER_CTX_free(ctx);
 
 	// Remove padding
 	plaintext.resize(plaintext_len);
 
-	// Debug output
-	std::cout << "Plaintext: " << plaintext << std::endl;
-
 	return plaintext;
 }
 
-// Base64 encode
+
+
+
+//BASE64
 std::string base64Encode(const std::string& input) {
 	BIO* bio, * b64;
 	BUF_MEM* bufferPtr;
 
 	b64 = BIO_new(BIO_f_base64());
+	if (!b64) {
+		throw std::runtime_error("Error creating base64 BIO");
+	}
+
 	bio = BIO_new(BIO_s_mem());
+	if (!bio) {
+		BIO_free_all(b64);
+		throw std::runtime_error("Error creating memory BIO");
+	}
+
 	bio = BIO_push(b64, bio);
+	if (!bio) {
+		BIO_free_all(b64);
+		throw std::runtime_error("Error pushing base64 BIO");
+	}
 
 	BIO_set_flags(bio, BIO_FLAGS_BASE64_NO_NL);
-	BIO_write(bio, input.c_str(), input.length());
-	BIO_flush(bio);
+	if (BIO_write(bio, input.c_str(), input.length()) <= 0) {
+		BIO_free_all(bio);
+		throw std::runtime_error("Error writing to base64 BIO");
+	}
+
+	if (BIO_flush(bio) != 1) {
+		BIO_free_all(bio);
+		throw std::runtime_error("Error flushing base64 BIO");
+	}
+
 	BIO_get_mem_ptr(bio, &bufferPtr);
+	if (!bufferPtr) {
+		BIO_free_all(bio);
+		throw std::runtime_error("Error getting memory pointer from base64 BIO");
+	}
 
 	std::string output(bufferPtr->data, bufferPtr->length);
 
@@ -494,7 +594,7 @@ std::string base64Decode(const std::string& input) {
 	// Create a BIO object for Base64 decoding
 	BIO* b64 = BIO_new(BIO_f_base64());
 	if (!b64) {
-		return ""; // Error handling: unable to create BIO object
+		throw std::runtime_error("Error creating BIO for Base64 decoding");
 	}
 
 	// Ignore newline characters during decoding
@@ -504,7 +604,7 @@ std::string base64Decode(const std::string& input) {
 	BIO* bio = BIO_new_mem_buf(input.data(), input.size());
 	if (!bio) {
 		BIO_free_all(b64);
-		return ""; // Error handling: unable to create memory BIO
+		throw std::runtime_error("Error creating memory BIO for Base64 decoding");
 	}
 
 	// Push the Base64 BIO onto the memory BIO stack
@@ -515,9 +615,9 @@ std::string base64Decode(const std::string& input) {
 
 	// Read and decode the input data
 	int decodedLength = BIO_read(b64, decodedBuffer.get(), input.size() * 3 / 4);
-	if (decodedLength <= 0) {
+	if (decodedLength < 0) {
 		BIO_free_all(b64);
-		return ""; // Error handling: failed to decode or empty input
+		throw std::runtime_error("Error decoding Base64 data");
 	}
 
 	// Ensure null termination
@@ -533,17 +633,31 @@ std::string base64Decode(const std::string& input) {
 
 
 
-// Generate random AES key
-std::string generateAESKey() {
-	unsigned char key[AES_BLOCK_SIZE * 2] = { 0 };
-	RAND_bytes(key, AES_BLOCK_SIZE);
-	char hex_key[AES_BLOCK_SIZE * 2 + 1] = { 0 };
-	for (int i = 0; i < AES_BLOCK_SIZE; ++i)
-		sprintf_s(hex_key + 2 * i, sizeof(hex_key) - 2 * i, "%02X", key[i]);
-	return std::string(hex_key);
+//RANDOM GENERATION
+std::string special_shuffle(std::string s)
+{
+	if (s.size() < 3) return s;
+	auto begin = std::find_if(s.begin(), s.end(), ::isprint);
+	auto end = std::find_if(s.rbegin(), s.rend(), ::isprint).base();
+	std::random_shuffle(++begin, --end);
+	return s;
 }
 
-// Generate random IV
+//AES
+std::string generateAESKey() {
+	unsigned char key[AES_BLOCK_SIZE] = { 0 };
+	if (RAND_bytes(key, AES_BLOCK_SIZE) != 1) {
+		throw std::runtime_error("Error generating random AES key");
+	}
+
+	std::ostringstream oss;
+	for (int i = 0; i < AES_BLOCK_SIZE; ++i) {
+		oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(key[i]);
+	}
+	return oss.str();
+}
+
+// IV
 std::string generateIV() {
 	unsigned char iv[AES_BLOCK_SIZE] = { 0 };
 	RAND_bytes(iv, AES_BLOCK_SIZE);
