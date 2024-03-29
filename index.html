@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CINNAMON BEAR</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #654321;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav {
+  float: left;
+  width: 30%;
+  height: 470px; /* only for demonstration, should be removed */
+  background: #a0522d;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 70%;
+  background-color: #cd853f ;
+
+}
+
+/* Clear floats after the columns */
+section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  background-color: #654321;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  nav, article {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>CINNAMON BEAR</h2>
+</header>
+
+<section>
+  <nav>
+    <ul>
+      <li><a href="DRIVE/">ACCES DRIVE</a></li>
+      <li><a href="http://onionshare:gradation-backwater@zubtgcxbn27dgnd4bc7hbawmuq3swbcxmta54uifo5v74hepyg4pq4id.onion">UPLOAD</a></li>
+    </ul>
+  </nav>
+  
+  <article>
+    <h1>Welcome to CINNAMON BEAR</h1>
+    <p>CINNAMON BEAR is a simple file sharing software that protect your privacy while sharing files.</p>
+    <img src="img/img.jpeg" alt="bear" width="500" height="333">
+  </article>
+</section>
+
+<footer>
+  <p>Contact us at : brownbear.renegade938@passinbox.com</p>
+</footer>
+
+</body>
+</html>
+
+
