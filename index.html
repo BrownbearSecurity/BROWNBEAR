@@ -20,6 +20,19 @@
     height: 0;
 }
 
+.text{
+  width:65%;
+  margin-left:10%;
+  text-align: left;
+  float: left;
+}
+.ico{
+  width:20%;
+  margin-right:5%;
+  text-align:right;
+  float: left;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   background-image: url("img/bg.jpg");
@@ -37,6 +50,7 @@ header {
   font-size: 3vh;
   color: white;
   border-radius: 25px;
+  height: 150px;
 }
 
 /* Create two columns/boxes that floats next to each other */
@@ -88,6 +102,38 @@ footer {
   border-radius: 25px;
 }
 
+.sidebar {
+  margin: 0;
+  padding: 0;
+  background-color: #654321;
+  position: fixed;
+  overflow: auto;
+}
+
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #3b2713;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+
 /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
 @media (max-width: 600px) {
   nav, article {
@@ -100,25 +146,36 @@ footer {
 <body>
 
 <section>
-  <nav>
-    <ul>
-      <button type="button" onclick="location.href='http://m2pfzeq7rvl7vvozm3nmt4maoxl3sti3ikvgufj3wu2y4iyxxylkkaad.onion/'">UPLOAD</button>
-      <br><br>
-      <button type="button" onclick="location.href='http://ysxsy6ng3t7cjzzeznqm3zrfw5ufggsu46osotsxk5jsft6qqymxdvyd.onion/'">MESSAGE</button>
-    </ul>
+  <nav class="sidebar">
+    <a href="#1">CINNAMON BEAR</a>
+    <a href="#2">TOR</a>
+    <a href="#3">CLOUD</a>
+    <a href="#4">MESSAGE</a>
+    <a href="https://github.com/dinde451/CINNAMONBEAR/releases">BROWNBEAR</a>
+    <br><br>
+    <center><img src="img/200w.gif" alt="bear" width="150" height="150"></center>
+    <br><br>
+    <a href="http://m2pfzeq7rvl7vvozm3nmt4maoxl3sti3ikvgufj3wu2y4iyxxylkkaad.onion/">UPLOAD</a>
+    <a href="http://ysxsy6ng3t7cjzzeznqm3zrfw5ufggsu46osotsxk5jsft6qqymxdvyd.onion/'">MESSAGE</a>
   </nav>
   
   <article>
     <div>
       <header>
+        <div class="ico">
+        <img src="img/favicon.ico" alt="bear" width="100" height="100">
+        </div>
+
+        <div class="text">
         <h2>CINNAMON BEAR</h2>
+        </div>
       </header>
     </div>
 
   <div>
-    <h1>Welcome to CINNAMON BEAR</h1>
+    <h1 id="1">Welcome to CINNAMON BEAR</h1>
     <p>CINNAMON BEAR is a simple file sharing software that protect your privacy while sharing files.</p><br><br>
-    <h2>TOR</h2>
+    <h2 id="2">TOR</h2>
     <p>Tor, short for "The Onion Router," is a free and open-source software designed to enhance privacy and security on the internet. It works by directing internet traffic through a worldwide volunteer network of servers to conceal a user's location and usage from anyone conducting network surveillance or traffic analysis. Tor encrypts data multiple times and routes it through several randomly selected nodes (also known as relays) on the Tor network, thereby making it extremely difficult to trace back to the user.</p><br>
       
      <p>Downloading Tor is a straightforward process:</p>
@@ -129,10 +186,10 @@ footer {
       
           <p>Once installed, you can launch Tor and start using CINNAMON BEAR. You CAN'T acces CINNAMON BEAR without TOR</p><br>
 
-    <h2>CLOUD</h2>
+    <h2 id="3">CLOUD</h2>
    <p>You need to understand that anonimity have a price, and if its not money its time. We update the Cloud's server once in a while, normaly at 9 pm each day. Also we have to stop the server sometime to let it cool.</p><br>
    <p>When asked when you upload your file, let a email. With no email we delete the file. We need a email so we can send you the link to your file. You should create a new email adress (with a safe email provider like proton mail) if it is a sensitive file.</p>
-   <h2>MESSAGE</h2>
+   <h2 id="4">MESSAGE</h2>
    <p>We host a public Onionshare chat room that use the TOR network. If you send sensitive data you should use our software BROWNBEAR.</p><br>
    <p>BrownBear is a Windows console-based encryption and decryption tool designed to provide users with a secure and user-friendly method for protecting sensitive information. Named after the formidable bear species, BrownBear combines the strength of modern encryption techniques with the adaptability of substitution ciphers to safeguard data.</p>
    <p>BROWNBEAR should protect any data that you send on our chatroom.</p>
