@@ -10,27 +10,43 @@
   box-sizing: border-box;
 }
 
+.container {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.container::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-image: url("img/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover; /* Resize the background image to cover the entire container */
   background-color: black;
+  overflow: hidden;
 }
 
 /* Style the header */
 header {
   background-color: #654321;
-  padding: 30px;
+  padding: 3vh;
   text-align: center;
-  font-size: 35px;
+  font-size: 3vh;
   color: white;
+  border-radius: 25px;
 }
 
 /* Create two columns/boxes that floats next to each other */
 nav {
   float: left;
-  width: 30%;
-  height: 68vh; /* only for demonstration, should be removed */
+  width: 13%;
+  height: 98vh; /* only for demonstration, should be removed */
   background: #a0522d;
   padding: 20px;
+  border-radius: 25px;
 }
 
 /* Style the list inside the menu */
@@ -40,12 +56,20 @@ nav ul {
 }
 
 article {
-  float: left;
+  float: right;
   padding: 20px;
-  width: 70%;
-  height: 68vh;
+  width: 60%;
+  height: 98vh;
   background-color: #cd853f ;
   overflow: auto;
+  border-radius: 25px;
+  position: absolute;
+  right: 20%;
+
+  /*Hacky solution for Scrollbar*/
+  overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
 
 /* Clear floats after the columns */
@@ -61,6 +85,7 @@ footer {
   padding: 10px;
   text-align: center;
   color: white;
+  border-radius: 25px;
 }
 
 /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
@@ -74,19 +99,22 @@ footer {
 </head>
 <body>
 
-<header>
-  <h2>CINNAMON BEAR</h2>
-</header>
-
 <section>
   <nav>
     <ul>
-      <li><a href="http://m2pfzeq7rvl7vvozm3nmt4maoxl3sti3ikvgufj3wu2y4iyxxylkkaad.onion/">UPLOAD</a></li>
-      <li><a href="http://ysxsy6ng3t7cjzzeznqm3zrfw5ufggsu46osotsxk5jsft6qqymxdvyd.onion/">MESSAGE</a></li>
+      <li><button type="button" href="http://m2pfzeq7rvl7vvozm3nmt4maoxl3sti3ikvgufj3wu2y4iyxxylkkaad.onion/">UPLOAD</button></li>
+      <br>
+      <li><button type="button" href="http://ysxsy6ng3t7cjzzeznqm3zrfw5ufggsu46osotsxk5jsft6qqymxdvyd.onion/">MESSAGE</button></li>
     </ul>
   </nav>
   
   <article>
+    <div>
+      <header>
+        <h2>CINNAMON BEAR</h2>
+      </header>
+    </div>
+
   <div>
     <h1>Welcome to CINNAMON BEAR</h1>
     <p>CINNAMON BEAR is a simple file sharing software that protect your privacy while sharing files.</p><br><br>
@@ -110,13 +138,18 @@ footer {
    <p>BROWNBEAR should protect any data that you send on our chatroom.</p>
    <a href="https://github.com/dinde451/BROWNBEAR/releases">BROWNBEAR</a> <br><br>
     <img src="img/img.jpeg" alt="bear" width="500" height="333">
+    <p><a href="https://www.freepik.com/free-photo/beautiful-shot-tall-trees-forest-fog-surrounded-by-plants_7822620.htm#query=dark%20forest&position=5&from_view=keyword&track=ais&uuid=55f5c54b-f5f1-40cb-a0ca-c52e6af70fcd">Background image by wirestock</a> on Freepik</p>
+    <br>
+    <br>
+   </div>
+
+   <div>
+    <footer>
+      <p>Contact us at : <a href="mailto:brownbear.renegade938@passinbox.com">brownbear.happening026@passinbox.com</a></p>
+    </footer>
    </div>
   </article>
 </section>
-
-<footer>
-  <p>Contact us at : <a href="mailto:brownbear.renegade938@passinbox.com">brownbear.happening026@passinbox.com</a></p>
-</footer>
 
 </body>
 </html>
