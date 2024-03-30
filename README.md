@@ -1,32 +1,60 @@
-# BROWNBEAR
-Overview:
-BrownBear is a console-based encryption and decryption tool designed to provide users with a secure and user-friendly method for protecting sensitive information. Named after the formidable bear species, BrownBear combines the strength of modern encryption techniques with the adaptability of substitution ciphers to safeguard data.
+# CINNAMON BEAR
 
-Features:
+CINNAMON BEAR is a simple website designed for securely sharing files via an Onionshare server. The platform emphasizes privacy and security, utilizing Tor for anonymity and encryption technologies to protect sensitive data. Additionally, CINNAMON BEAR hosts a chat room for users to communicate securely.
 
-    Menu-Driven Interface:
-    BrownBear offers a straightforward menu-driven interface, making it accessible to users of all technical backgrounds. Users are presented with a range of options, including encryption, decryption, key management, and program exit.
+## Features
 
-    Substitution Cipher:
-    The program employs a substitution cipher to obfuscate the input text before encryption. This classical cryptographic technique substitutes each character in the plaintext with another character based on a predefined key. By doing so, it adds an additional layer of security to the encryption process.
+- **Secure File Sharing**: Users can upload files to an Onionshare server securely.
+- **Anonymity with Tor**: CINNAMON BEAR utilizes Tor to provide anonymity and conceal users' identities.
+- **Encrypted Communication**: The chat room hosted on CINNAMON BEAR ensures encrypted communication for users.
+- **Email**: After file upload, users receive an email containing a link to share the uploaded file securely.
 
-    AES Encryption:
-    BrownBear utilizes Advanced Encryption Standard (AES), a widely recognized and trusted encryption algorithm, to encrypt the substituted text. AES is known for its robust security and efficiency, making it suitable for protecting sensitive data.
+## Usage
 
-    Base64 Encoding:
-    To ensure compatibility and safe transmission of encrypted data, BrownBear employs Base64 encoding. This encoding scheme converts binary data into a printable ASCII string, facilitating its exchange across different systems without data loss or corruption.
+1. **Accessing CINNAMON BEAR**:
+   - Visit the CINNAMON BEAR website using a Tor-enabled browser.
+   - Navigate to the upload section to share files securely.
 
-    Key and IV Generation:
-    The program features functionalities for generating random AES keys and Initialization Vectors (IVs) when needed. These cryptographic components are crucial for securing the encryption process and enhancing the confidentiality of the encrypted data.
+2. **File Upload**:
+   - Choose the file you want to upload.
+   - Provide an email address where you'll receive the link to share the uploaded file.
+   - Once the file is uploaded, you'll receive an email containing a secure link to access the file.
 
-    Error Handling:
-    BrownBear incorporates robust error handling mechanisms to gracefully manage exceptions and unexpected scenarios. By providing informative error messages, it assists users in troubleshooting issues and ensuring smooth operation.
+3. **Chat Room**:
+   - Access the hosted chat room through the provided link.
+   - Engage in secure communication with other users.
+   - You can use our software BROWNBEAR to encrypt your messages.
 
-Usage:
-BrownBear can be utilized in various scenarios where data confidentiality is paramount. Whether encrypting sensitive messages, protecting personal information, or securing communication channels, BrownBear offers a reliable solution for safeguarding data against unauthorized access.
+## Installation
 
-Security Considerations:
-While BrownBear strives to provide strong encryption and protection mechanisms, users should exercise caution when handling sensitive information. It is essential to keep encryption keys secure, avoid sharing them openly, and adhere to best practices for data protection.
+CINNAMON BEAR is a web-based application that doesn't require installation on the user's device. However, users must have Tor installed to access the platform securely.
 
-Conclusion:
-BrownBear represents a versatile and user-friendly encryption tool, combining classical and modern cryptographic techniques to ensure the confidentiality and integrity of sensitive data. With its intuitive interface and robust security features, BrownBear empowers users to protect their information in an ever-evolving digital landscape.
+To install Tor:
+
+- Visit the official [Tor Project website](https://www.torproject.org/).
+- Download the appropriate version for your operating system (Windows, macOS, Linux, or Android).
+- Follow the installation instructions provided on the website.
+
+To install BROWNBEAR
+
+- Visit the official [CINNAMON BEAR Github Release page](https://github.com/dinde451/CINNAMONBEAR/releases).
+- Download the latest version.
+- Run the software (BROWNBEAR is only avaliable on Windows for now).
+
+## Contributing
+
+Contributions to CINNAMON BEAR are welcome! If you'd like to contribute to the project, please follow these steps:
+
+1. Fork the repository.
+2. Make your changes.
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push (`git push origin feature/your-feature`).
+5. Create a new Pull Request.
+
+## Support
+
+For any questions or issues regarding CINNAMON BEAR, feel free to contact us at [brownbear.renegade938@passinbox.com](mailto:brownbear.renegade938@passinbox.com).
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
