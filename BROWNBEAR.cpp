@@ -107,6 +107,9 @@ std::string readKeyFromFile(const std::string& fileName);
 void loadKeys(std::string& cipherKey, std::string& cipherKeyA, std::string& cipherKeyB,
 	std::string& aesKey, std::string& iv);
 
+void decryptFile(const std::string& inputFile, const std::string& outputFile, const std::string& aesKey, const std::string& iv);
+void encryptFile(const std::string& inputFile, const std::string& outputFile, const std::string& aesKey, const std::string& iv);
+
 string lowerCaseString(string& source);
 string special_shuffle(std::string s);
 string encryptAES(const std::string& plaintext, const std::string& key, const std::string& iv);
@@ -171,10 +174,12 @@ int main()
 		cout << "   \n";
 		cout << " [1] ENCRYPT\n";
 		cout << " [2] DECRYPT\n";
-		cout << " [3] Keys\n";
-		cout << " [4] GENERATE A NEW KEY\n";
-		cout << " [5] SAVES KEYS\n";
-		cout << " [6] Exit\n";
+		cout << " [3] ENCRYPT FILES\n";
+		cout << " [4] DECRYPT FILES\n";
+		cout << " [5] KEYS\n";
+		cout << " [6] GENERATE A NEW KEY\n";
+		cout << " [7] SAVES KEYS\n";
+		cout << " [8] Exit\n";
 		cout << "   \n";
 		cout << "============================================================================================\n";
 		cout << "                        Enter your choice and press enter: \n";
@@ -242,8 +247,33 @@ int main()
 			}
 
 			break;
-
-		case 3:
+		case 3: // Encrypt a file
+			try {
+				std::string inputFile, outputFile;
+				std::cout << "Enter the path to the input file: ";
+				std::getline(std::cin >> std::ws, inputFile); // Read input file path
+				std::cout << "Enter the path to the output file: ";
+				std::getline(std::cin >> std::ws, outputFile); // Read output file path
+				encryptFile(inputFile, outputFile, aesKey, iv);
+			}
+			catch (const std::exception& e) {
+				std::cerr << "Error occurred while encrypting file: " << e.what() << std::endl;
+			}
+			break;
+		case 4: // Decrypt a file
+			try {
+				std::string inputFile, outputFile;
+				std::cout << "Enter the path to the input file: ";
+				std::getline(std::cin >> std::ws, inputFile); // Read input file path
+				std::cout << "Enter the path to the output file: ";
+				std::getline(std::cin >> std::ws, outputFile); // Read output file path
+				decryptFile(inputFile, outputFile, aesKey, iv);
+			}
+			catch (const std::exception& e) {
+				std::cerr << "Error occurred while decrypting file: " << e.what() << std::endl;
+			}
+			break;
+		case 5:
 			try {
 				system("cls");
 				cout << "Please enter the key1: " << endl;
@@ -261,7 +291,7 @@ int main()
 				cerr << "Error occurred during key management: " << e.what() << endl;
 			}
 			break;
-		case 4:
+		case 6:
 			try {
 				system("cls");
 				std::cout << special_shuffle(alphabet) << "\n";
@@ -276,7 +306,7 @@ int main()
 				cerr << "Error occurred during key generation: " << e.what() << endl;
 			}
 			break;
-		case 5:
+		case 7:
 			try {
 				system("cls");
 				saveKeyToFile(cipherKey, "cipherKey.txt");
@@ -289,7 +319,7 @@ int main()
 				cerr << "Error occurred while saving keys: " << e.what() << endl;
 			}
 			break;
-		case 6:
+		case 8:
 			system("cls");
 			cout << "End of Program.\n";
 			gameOn = false;
@@ -566,6 +596,68 @@ std::string decryptAES(const std::string& ciphertext, const std::string& key, co
 
 
 
+//AES FILES
+// Function to encrypt a file using AES key and IV
+void encryptFile(const std::string& inputFile, const std::string& outputFile, const std::string& aesKey, const std::string& iv) {
+	// Open the input file for reading
+	std::ifstream inFile(inputFile, std::ios::binary);
+	if (!inFile) {
+		throw std::runtime_error("Unable to open input file for reading");
+	}
+
+	// Open the output file for writing
+	std::ofstream outFile(outputFile, std::ios::binary);
+	if (!outFile) {
+		throw std::runtime_error("Unable to open output file for writing");
+	}
+
+	// Read the content of the input file into memory
+	std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+
+	// Encrypt the content using AES encryption
+	std::string encryptedContent = encryptAES(content, aesKey, iv);
+
+	// Write the encrypted content to the output file
+	outFile << encryptedContent;
+
+	// Close the files
+	inFile.close();
+	outFile.close();
+
+	std::cout << "File encrypted successfully.\n";
+}
+
+// Function to decrypt a file using AES key and IV
+void decryptFile(const std::string& inputFile, const std::string& outputFile, const std::string& aesKey, const std::string& iv) {
+	// Open the input file for reading
+	std::ifstream inFile(inputFile, std::ios::binary);
+	if (!inFile) {
+		throw std::runtime_error("Unable to open input file for reading");
+	}
+
+	// Open the output file for writing
+	std::ofstream outFile(outputFile, std::ios::binary);
+	if (!outFile) {
+		throw std::runtime_error("Unable to open output file for writing");
+	}
+
+	// Read the content of the input file into memory
+	std::string encryptedContent((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+
+	// Decrypt the content using AES decryption
+	std::string decryptedContent = decryptAES(encryptedContent, aesKey, iv);
+
+	// Write the decrypted content to the output file
+	outFile << decryptedContent;
+
+	// Close the files
+	inFile.close();
+	outFile.close();
+
+	std::cout << "File decrypted successfully.\n";
+}
+
+
 
 //BASE64
 std::string base64Encode(const std::string& input) {
@@ -690,6 +782,10 @@ std::string generateIV() {
 	return std::string(hex_iv);
 }
 
+
+
+
+//KEY MANAGEMENT
 void saveKeyToFile(const std::string& key, const std::string& fileName) {
 	std::ofstream outFile(fileName);
 	if (outFile.is_open()) {
