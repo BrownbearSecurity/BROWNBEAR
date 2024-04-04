@@ -100,6 +100,13 @@
 using namespace std;
 
 //fonctions 
+void saveKeyToFile(const std::string& key, const std::string& fileName);
+void saveKeys(const std::string& cipherKey, const std::string& cipherKeyA, const std::string& cipherKeyB,
+	const std::string& aesKey, const std::string& iv);
+std::string readKeyFromFile(const std::string& fileName);
+void loadKeys(std::string& cipherKey, std::string& cipherKeyA, std::string& cipherKeyB,
+	std::string& aesKey, std::string& iv);
+
 string lowerCaseString(string& source);
 string special_shuffle(std::string s);
 string encryptAES(const std::string& plaintext, const std::string& key, const std::string& iv);
@@ -143,8 +150,10 @@ int main()
 	string sourceB2;
 	string decrypted;
 	string password;
+	string aesKey;
 	string alphabet = "/abcdefghijklmnopqrstuvwxyz0123456789-+.,*";
 	std::string key, iv, text;
+	loadKeys(cipherKey, cipherKeyA, cipherKeyB, aesKey, iv);
 	ifstream inFile;
 	system("color 6F");
 	system("TITLE BROWNBEAR");
@@ -164,7 +173,8 @@ int main()
 		cout << " [2] DECRYPT\n";
 		cout << " [3] Keys\n";
 		cout << " [4] GENERATE A NEW KEY\n";
-		cout << " [5] Exit\n";
+		cout << " [5] SAVES KEYS\n";
+		cout << " [6] Exit\n";
 		cout << "   \n";
 		cout << "============================================================================================\n";
 		cout << "                        Enter your choice and press enter: \n";
@@ -181,22 +191,22 @@ int main()
 		{
 		case 1:
 			try {
-			system("cls");
-			cout << "Please enter a string: " << endl;
-			cin >> source;
-			lowerCaseString(source);
-			substitution(source, cipherKey, destination);
-			Encrypted(destination, cipherKeyA, encrypted);
-			Encrypted2(encrypted, cipherKeyB, encrypted2);
+				system("cls");
+				cout << "Please enter a string: " << endl;
+				cin >> source;
+				lowerCaseString(source);
+				substitution(source, cipherKey, destination);
+				Encrypted(destination, cipherKeyA, encrypted);
+				Encrypted2(encrypted, cipherKeyB, encrypted2);
 
-			// Encrypt the encrypted2 string using AES
-			encryptedAES = encryptAES(encrypted2, key, iv);
+				// Encrypt the encrypted2 string using AES
+				encryptedAES = encryptAES(encrypted2, key, iv);
 
-			// Base64 encode the encrypted data for safe transmission
-			base64Encoded = base64Encode(encryptedAES);
+				// Base64 encode the encrypted data for safe transmission
+				base64Encoded = base64Encode(encryptedAES);
 
-			// Debug output
-			cout << "Encrypted text: " << base64Encoded << endl;
+				// Debug output
+				cout << "Encrypted text: " << base64Encoded << endl;
 			}
 			catch (const std::exception& e) {
 				cerr << "Error occurred during encryption: " << e.what() << endl;
@@ -206,26 +216,26 @@ int main()
 
 		case 2:
 			try {
-			system("cls");
-			cout << "Please enter a string: " << endl;
-			cin >> sourceB2;
+				system("cls");
+				cout << "Please enter a string: " << endl;
+				cin >> sourceB2;
 
-			// Decode the base64-encoded ciphertext
-			sourceB2 = base64Decode(sourceB2);
+				// Decode the base64-encoded ciphertext
+				sourceB2 = base64Decode(sourceB2);
 
-			// Decrypt the ciphertext using AES
-			decryptedAES = decryptAES(sourceB2, key, iv);
+				// Decrypt the ciphertext using AES
+				decryptedAES = decryptAES(sourceB2, key, iv);
 
-			// Perform necessary transformations (if any) to get the original plaintext
-			// For example, you might need to desubstitution here
-			sourceB2 = decryptedAES;
-			lowerCaseString(sourceB2);
-			Decrypted2(sourceB2, cipherKeyB, sourceB);
-			Decrypted(sourceB, cipherKeyA, decrypted);
-			desubstitution(decrypted, cipherKey, original);
+				// Perform necessary transformations (if any) to get the original plaintext
+				// For example, you might need to desubstitution here
+				sourceB2 = decryptedAES;
+				lowerCaseString(sourceB2);
+				Decrypted2(sourceB2, cipherKeyB, sourceB);
+				Decrypted(sourceB, cipherKeyA, decrypted);
+				desubstitution(decrypted, cipherKey, original);
 
-			// Debug output
-			cout << "Original text: " << original << endl;
+				// Debug output
+				cout << "Original text: " << original << endl;
 			}
 			catch (const std::exception& e) {
 				cerr << "Error occurred during decryption: " << e.what() << endl;
@@ -235,17 +245,17 @@ int main()
 
 		case 3:
 			try {
-			system("cls");
-			cout << "Please enter the key1: " << endl;
-			cin >> cipherKey;
-			cout << "Please enter the key2: " << endl;
-			cin >> cipherKeyA;
-			cout << "Please enter the key3: " << endl;
-			cin >> cipherKeyB;
-			cout << "Enter AES key (16, 24, or 32 bytes): ";
-			cin >> key;
-			cout << "Enter Initialization Vector (IV) (16 bytes): ";
-			cin >> iv;
+				system("cls");
+				cout << "Please enter the key1: " << endl;
+				cin >> cipherKey;
+				cout << "Please enter the key2: " << endl;
+				cin >> cipherKeyA;
+				cout << "Please enter the key3: " << endl;
+				cin >> cipherKeyB;
+				cout << "Enter AES key (16, 24, or 32 bytes): ";
+				cin >> key;
+				cout << "Enter Initialization Vector (IV) (16 bytes): ";
+				cin >> iv;
 			}
 			catch (const std::exception& e) {
 				cerr << "Error occurred during key management: " << e.what() << endl;
@@ -253,20 +263,33 @@ int main()
 			break;
 		case 4:
 			try {
-			system("cls");
-			std::cout << special_shuffle(alphabet) << "\n";
-			std::cout << special_shuffle(alphabet) << "\n";
-			std::cout << special_shuffle(alphabet) << "\n";
-			key = generateAESKey();
-			iv = generateIV();
-			std::cout << "Generated AES key: " << key << std::endl;
-			std::cout << "Generated IV: " << iv << std::endl;
+				system("cls");
+				std::cout << special_shuffle(alphabet) << "\n";
+				std::cout << special_shuffle(alphabet) << "\n";
+				std::cout << special_shuffle(alphabet) << "\n";
+				key = generateAESKey();
+				iv = generateIV();
+				std::cout << "Generated AES key: " << key << std::endl;
+				std::cout << "Generated IV: " << iv << std::endl;
 			}
 			catch (const std::exception& e) {
 				cerr << "Error occurred during key generation: " << e.what() << endl;
 			}
 			break;
 		case 5:
+			try {
+				system("cls");
+				saveKeyToFile(cipherKey, "cipherKey.txt");
+				saveKeyToFile(cipherKeyA, "cipherKeyA.txt");
+				saveKeyToFile(cipherKeyB, "cipherKeyB.txt");
+				saveKeyToFile(key, "aesKey.txt");
+				saveKeyToFile(iv, "iv.txt");
+			}
+			catch (const std::exception& e) {
+				cerr << "Error occurred while saving keys: " << e.what() << endl;
+			}
+			break;
+		case 6:
 			system("cls");
 			cout << "End of Program.\n";
 			gameOn = false;
@@ -665,4 +688,47 @@ std::string generateIV() {
 	for (int i = 0; i < AES_BLOCK_SIZE; ++i)
 		sprintf_s(hex_iv + 2 * i, sizeof(hex_iv) - 2 * i, "%02X", iv[i]);
 	return std::string(hex_iv);
+}
+
+void saveKeyToFile(const std::string& key, const std::string& fileName) {
+	std::ofstream outFile(fileName);
+	if (outFile.is_open()) {
+		outFile << key;
+		outFile.close();
+		std::cout << "Key saved to file: " << fileName << std::endl;
+	}
+	else {
+		throw std::runtime_error("Unable to open file for writing");
+	}
+}
+
+void saveKeys(const std::string& cipherKey, const std::string& cipherKeyA, const std::string& cipherKeyB,
+	const std::string& aesKey, const std::string& iv) {
+	saveKeyToFile(cipherKey, "cipherKey.txt");
+	saveKeyToFile(cipherKeyA, "cipherKeyA.txt");
+	saveKeyToFile(cipherKeyB, "cipherKeyB.txt");
+	saveKeyToFile(aesKey, "aesKey.txt");
+	saveKeyToFile(iv, "iv.txt");
+}
+
+std::string readKeyFromFile(const std::string& fileName) {
+	std::ifstream inFile(fileName);
+	if (inFile.is_open()) {
+		std::string key;
+		inFile >> key;
+		inFile.close();
+		return key;
+	}
+	else {
+		throw std::runtime_error("Unable to open file for reading");
+	}
+}
+
+void loadKeys(std::string& cipherKey, std::string& cipherKeyA, std::string& cipherKeyB,
+	std::string& aesKey, std::string& iv) {
+	cipherKey = readKeyFromFile("cipherKey.txt");
+	cipherKeyA = readKeyFromFile("cipherKeyA.txt");
+	cipherKeyB = readKeyFromFile("cipherKeyB.txt");
+	aesKey = readKeyFromFile("aesKey.txt");
+	iv = readKeyFromFile("iv.txt");
 }
