@@ -1,4 +1,4 @@
-#ifndef _GLIBCXX_NO_ASSERT
+﻿#ifndef _GLIBCXX_NO_ASSERT
 #include <cassert>
 #endif
 #include <cctype>
@@ -96,14 +96,8 @@
 #include <openssl/buffer.h>
 #include <iomanip>
 #include <cstdio>
-#include <io.h>
-#include <fcntl.h>
-
-#include <filesystem>
-using namespace std;
 
 using namespace std;
-namespace fs = std::filesystem;
 
 //fonctions 
 void saveKeyToFile(const std::string& key, const std::string& fileName);
@@ -174,24 +168,18 @@ int main()
 		cout << "                                     B R O W N B E A R\n";
 		cout << "                                    -------------------";
 		cout << " \n";
-		wprint(L"                                         \u0295\u00b4\u2022\u0020\u1d25\u2022\u0325\u0060\u0294\n");
-		cout << " \n";
+		wprint(L"                                          ʕ'• ᴥ•̥`ʔ\n");
+		wprint(L"                                   \n");
 		cout << "============================================================================================\n";
 		cout << "   \n";
-		cout << " [1] ENCRYPT TEXT\n";
-		cout << " [2] DECRYPT TEXT\n";
-		cout << " \n";
+		cout << " [1] ENCRYPT\n";
+		cout << " [2] DECRYPT\n";
 		cout << " [3] ENCRYPT FILES\n";
 		cout << " [4] DECRYPT FILES\n";
-		cout << " [5] ENCRYPT FOLDER\n";
-		cout << " [6] DECRYPT FOLDER\n";
-		cout << " \n";
-		cout << " [7] SET KEYS\n";
-		cout << " [8] GENERATE A NEW KEY\n";
-		cout << " [9] SAVES KEYS\n";
-		cout << " \n";
-		cout << " [10] EXIT\n";
-		cout << " \n";
+		cout << " [5] KEYS\n";
+		cout << " [6] GENERATE A NEW KEY\n";
+		cout << " [7] SAVES KEYS\n";
+		cout << " [8] Exit\n";
 		cout << "   \n";
 		cout << "============================================================================================\n";
 		cout << "                        Enter your choice and press enter: \n";
@@ -261,26 +249,11 @@ int main()
 			break;
 		case 3: // Encrypt a file
 			try {
-				system("cls");
 				std::string inputFile, outputFile;
 				std::cout << "Enter the path to the input file: ";
 				std::getline(std::cin >> std::ws, inputFile); // Read input file path
-
-				// Check if the input file path starts and ends with a double quote
-				if (!inputFile.empty() && inputFile.front() == '"' && inputFile.back() == '"') {
-					// Remove the double quotes at the beginning and end
-					inputFile = inputFile.substr(1, inputFile.size() - 2);
-				}
-
 				std::cout << "Enter the path to the output file: ";
 				std::getline(std::cin >> std::ws, outputFile); // Read output file path
-
-				// Check if the output file path starts and ends with a double quote
-				if (!outputFile.empty() && outputFile.front() == '"' && outputFile.back() == '"') {
-					// Remove the double quotes at the beginning and end
-					outputFile = outputFile.substr(1, outputFile.size() - 2);
-				}
-
 				encryptFile(inputFile, outputFile, aesKey, iv);
 			}
 			catch (const std::exception& e) {
@@ -289,107 +262,18 @@ int main()
 			break;
 		case 4: // Decrypt a file
 			try {
-				system("cls");
 				std::string inputFile, outputFile;
 				std::cout << "Enter the path to the input file: ";
 				std::getline(std::cin >> std::ws, inputFile); // Read input file path
-
-				// Check if the input file path starts and ends with a double quote
-				if (!inputFile.empty() && inputFile.front() == '"' && inputFile.back() == '"') {
-					// Remove the double quotes at the beginning and end
-					inputFile = inputFile.substr(1, inputFile.size() - 2);
-				}
-
 				std::cout << "Enter the path to the output file: ";
 				std::getline(std::cin >> std::ws, outputFile); // Read output file path
-
-				// Check if the output file path starts and ends with a double quote
-				if (!outputFile.empty() && outputFile.front() == '"' && outputFile.back() == '"') {
-					// Remove the double quotes at the beginning and end
-					outputFile = outputFile.substr(1, outputFile.size() - 2);
-				}
-
 				decryptFile(inputFile, outputFile, aesKey, iv);
 			}
 			catch (const std::exception& e) {
 				std::cerr << "Error occurred while decrypting file: " << e.what() << std::endl;
 			}
 			break;
-		case 5: // Encrypt a folder
-			try {
-				system("cls");
-				std::string folderPath, outputPath;
-				std::cout << "Enter the path to the folder to encrypt: ";
-				std::getline(std::cin >> std::ws, folderPath); // Read folder path
-
-				// Check if the folder path starts and ends with double quotes
-				if (!folderPath.empty() && folderPath.front() == '"' && folderPath.back() == '"') {
-					// Remove the starting and ending double quotes
-					folderPath = folderPath.substr(1, folderPath.size() - 2);
-				}
-
-				std::cout << "Enter the path to the output folder: ";
-				std::getline(std::cin >> std::ws, outputPath); // Read output folder path
-
-				// Check if the output folder path starts and ends with double quotes
-				if (!outputPath.empty() && outputPath.front() == '"' && outputPath.back() == '"') {
-					// Remove the starting and ending double quotes
-					outputPath = outputPath.substr(1, outputPath.size() - 2);
-				}
-
-				// Iterate through files in the folder
-				for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
-					if (entry.is_regular_file()) {
-						std::string inputFile = entry.path().string();
-						std::string outputFile = outputPath + "\\" + entry.path().filename().string() + ".encrypted";
-						encryptFile(inputFile, outputFile, aesKey, iv);
-					}
-				}
-				std::cout << "Folder encryption completed successfully." << std::endl;
-			}
-			catch (const std::exception& e) {
-				std::cerr << "Error occurred while encrypting folder: " << e.what() << std::endl;
-			}
-			break;
-		case 6: // Decrypt a folder
-			try {
-				system("cls");
-				std::string folderPath, outputPath;
-				std::cout << "Enter the path to the folder to decrypt: ";
-				std::getline(std::cin >> std::ws, folderPath); // Read folder path
-
-				// Check if the folder path starts and ends with double quotes
-				if (!folderPath.empty() && folderPath.front() == '"' && folderPath.back() == '"') {
-					// Remove the starting and ending double quotes
-					folderPath = folderPath.substr(1, folderPath.size() - 2);
-				}
-
-				std::cout << "Enter the path to the output folder: ";
-				std::getline(std::cin >> std::ws, outputPath); // Read output folder path
-
-				// Check if the output folder path starts and ends with double quotes
-				if (!outputPath.empty() && outputPath.front() == '"' && outputPath.back() == '"') {
-					// Remove the starting and ending double quotes
-					outputPath = outputPath.substr(1, outputPath.size() - 2);
-				}
-
-				// Iterate through files in the folder
-				for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
-					if (entry.is_regular_file()) {
-						std::string inputFile = entry.path().string();
-						// Remove the ".encrypted" extension to get the original filename
-						std::string originalFileName = entry.path().filename().stem().string();
-						std::string outputFile = outputPath + "\\" + originalFileName;
-						decryptFile(inputFile, outputFile, aesKey, iv);
-					}
-				}
-				std::cout << "Folder decryption completed successfully." << std::endl;
-			}
-			catch (const std::exception& e) {
-				std::cerr << "Error occurred while decrypting folder: " << e.what() << std::endl;
-			}
-			break;
-		case 7:
+		case 5:
 			try {
 				system("cls");
 				cout << "Please enter the key1: " << endl;
@@ -407,7 +291,7 @@ int main()
 				cerr << "Error occurred during key management: " << e.what() << endl;
 			}
 			break;
-		case 8:
+		case 6:
 			try {
 				system("cls");
 				std::cout << special_shuffle(alphabet) << "\n";
@@ -422,7 +306,7 @@ int main()
 				cerr << "Error occurred during key generation: " << e.what() << endl;
 			}
 			break;
-		case 9:
+		case 7:
 			try {
 				system("cls");
 				saveKeyToFile(cipherKey, "cipherKey.txt");
@@ -435,7 +319,7 @@ int main()
 				cerr << "Error occurred while saving keys: " << e.what() << endl;
 			}
 			break;
-		case 10:
+		case 8:
 			system("cls");
 			cout << "End of Program.\n";
 			gameOn = false;
@@ -865,24 +749,12 @@ std::string base64Decode(const std::string& input) {
 
 
 //RANDOM GENERATION
-std::string special_shuffle(std::string s) {
+std::string special_shuffle(std::string s)
+{
 	if (s.size() < 3) return s;
-
 	auto begin = std::find_if(s.begin(), s.end(), ::isprint);
 	auto end = std::find_if(s.rbegin(), s.rend(), ::isprint).base();
-
-	if (std::distance(begin, end) < 3) return s; // Check if there are at least 3 printable characters
-
-	std::vector<char> chars(begin, end);
-	srand(static_cast<unsigned int>(time(nullptr))); // Seed the random number generator
-
-	for (size_t i = 1; i < chars.size() - 1; ++i) {
-		size_t j = rand() % (chars.size() - 2) + 1;
-		std::swap(chars[i], chars[j]);
-	}
-
-	std::copy(chars.begin(), chars.end(), begin);
-
+	std::random_shuffle(++begin, --end);
 	return s;
 }
 
